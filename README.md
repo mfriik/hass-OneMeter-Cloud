@@ -35,7 +35,7 @@ This custom integration connects [OneMeter](https://onemeter.com) devices to Hom
 During setup, you will need to provide:
 
 - **API Key:** Obtain from [cloud.onemeter.com/#/api](https://cloud.onemeter.com/#/api)  
-- **Device ID:** Found at [cloud.onemeter.com/#/devices](https://cloud.onemeter.com/#/devices) (click your device and find the device ID in the URL, e.g., `***000a000-0000-0000-0000-000000000000***`)  
+- **Device ID:** Found at [cloud.onemeter.com/#/devices](https://cloud.onemeter.com/#/devices) (click your device and find the device ID in the URL, e.g., cloud.onemeter.com/#/devices`000a000-0000-0000-0000-000000000000`)  
 - **Device Name:** Used to name entities for easier identification  
 - **Scan Interval:** How frequently to poll the API (in seconds)
 

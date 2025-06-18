@@ -1,10 +1,12 @@
 {
   "domain": "onemeter",
   "name": "OneMeter Integration",
-  "version": "1.0.0",
-  "documentation": "https://github.com/yourusername/onemeter",
+  "version": "v0.0.1",
+  "documentation": "https://github.com/mfriik/hass-OneMeter-Cloud",
   "requirements": [],
-  "codeowners": ["@yourusername"],
+  "codeowners": ["@mfriik"],
   "dependencies": ["utility_meter"],
-  "config_flow": true
+  "config_flow": true,
+  "logo": "images/logo.png",
+  "icon": "images/icon.png"
 }

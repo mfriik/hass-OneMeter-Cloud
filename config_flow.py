@@ -3,7 +3,7 @@ from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
 from .const import DOMAIN
 
-DEFAULT_SCAN_INTERVAL = 300
+DEFAULT_SCAN_INTERVAL = 900
 
 class OneMeterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1

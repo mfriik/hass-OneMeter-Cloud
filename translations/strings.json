@@ -1,0 +1,29 @@
+{
+  "title": "OneMeter Integration",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure OneMeter",
+        "description": "Connect your OneMeter device to Home Assistant.",
+        "data": {
+          "api_key": {
+            "name": "API Key",
+            "description": "Get this from https://cloud.onemeter.com. This is used to authenticate requests."
+          },
+          "device_id": {
+            "name": "Device ID",
+            "description": "Find your device ID in the OneMeter cloud dashboard."
+          },
+          "device_name": {
+            "name": "Device Name",
+            "description": "Give a name to this integration, useful if you have more than one device."
+          },
+          "scan_interval": {
+            "name": "Scan Interval (seconds)",
+            "description": "The OneMeter API updates every 15 minutes. Use a lower interval (e.g., 300s) for troubleshooting, but avoid polling too often to prevent overloading the API."
+          }
+        }
+      }
+    }
+  }
+}

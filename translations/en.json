@@ -1,0 +1,16 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure OneMeter",
+        "description": "Enter your OneMeter API credentials and settings.",
+        "data": {
+          "api_key": "API Key",
+          "device_id": "Device ID",
+          "device_name": "Device Name",
+          "scan_interval": "Scan Interval (seconds)"
+        }
+      }
+    }
+  }
+}

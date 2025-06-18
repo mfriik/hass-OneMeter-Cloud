@@ -1,0 +1,10 @@
+{
+  "domain": "onemeter",
+  "name": "OneMeter Integration",
+  "version": "1.0.0",
+  "documentation": "https://github.com/yourusername/onemeter",
+  "requirements": [],
+  "codeowners": ["@yourusername"],
+  "dependencies": ["utility_meter"],
+  "config_flow": true
+}

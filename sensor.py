@@ -1,4 +1,3 @@
-
 import logging
 import aiohttp
 import async_timeout
@@ -46,48 +45,56 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         return coordinator.last_update_success_time.isoformat() if coordinator.last_update_success_time else None
 
     sensors = [
-        ("Firmware Version", lambda d: f"v.{d['firmware']['currentVersion']}", None),
-        ("Last Readout", lambda d: d["lastReading"]["date"], None),
-        ("Battery Level", lambda d: d["lastReading"]["BATTERY_PC"], PERCENTAGE),
-        ("Total Consumption", lambda d: d["lastReading"]["OBIS"]["15_8_0"], UnitOfEnergy.KILO_WATT_HOUR),
-        ("Current Month Consumption", lambda d: round(d["usage"]["thisMonth"], 2), UnitOfEnergy.KILO_WATT_HOUR),
-        ("Previous Month Consumption", lambda d: round(d["usage"]["previousMonth"], 2), UnitOfEnergy.KILO_WATT_HOUR),
-        ("Last API Refresh", last_refresh_fn, None)
+        ("Firmware Version", lambda d: f"v.{d['firmware']['currentVersion']}", None, "mdi:chip"),
+        ("Last Readout", lambda d: d["lastReading"]["date"], None, "mdi:clock-outline"),
+        ("Battery Level", lambda d: d["lastReading"]["BATTERY_PC"], PERCENTAGE, "mdi:battery"),
+        ("Total Consumption", lambda d: d["lastReading"]["OBIS"]["15_8_0"], UnitOfEnergy.KILO_WATT_HOUR, "mdi:lightning-bolt"),
+        ("Current Month Consumption", lambda d: round(d["usage"]["thisMonth"], 2), UnitOfEnergy.KILO_WATT_HOUR, "mdi:calendar-month"),
+        ("Previous Month Consumption", lambda d: round(d["usage"]["previousMonth"], 2), UnitOfEnergy.KILO_WATT_HOUR, "mdi:calendar-month-outline"),
+        ("Last API Refresh", last_refresh_fn, None, "mdi:api")
     ]
 
     entities = []
-    for idx, (suffix, fn, unit) in enumerate(sensors):
+    for idx, (suffix, fn, unit, icon) in enumerate(sensors):
+        # Keep the original entity name for entity ID generation
         full_name = f"OneMeter_{device_name}_{suffix}"
-        entities.append(OneMeterSensor(coordinator, full_name, fn, unit, idx, entry.entry_id))
+        # Create friendly name in the format "{device_name} {sensor_name}"
+        friendly_name = f"{device_name} {suffix}"
+        entities.append(OneMeterSensor(coordinator, full_name, friendly_name, fn, unit, icon, idx, entry.entry_id))
 
     async_add_entities(entities)
 
     await create_utility_meter(hass, device_name, entry)
 
 class OneMeterSensor(CoordinatorEntity, SensorEntity):
-    def __init__(self, coordinator, name, fn, unit, idx, config_entry_id):
+    def __init__(self, coordinator, entity_name, friendly_name, fn, unit, icon, idx, config_entry_id):
         super().__init__(coordinator)
-        self._name = name
+        self._entity_name = entity_name  # Used for entity ID generation
+        self._friendly_name = friendly_name  # Used for display name
         self._value_fn = fn
         self._unit = unit
+        self._icon = icon
         self._unique_id = f"{config_entry_id}_{idx}"
         self._attr_native_unit_of_measurement = unit
+        self._attr_name = friendly_name  # This sets the friendly name
+        self._attr_icon = icon  # This sets the icon
         self._attr_device_info = {
             "identifiers": {(DOMAIN, config_entry_id)},
-            "name": name.split()[0],
+            "name": entity_name.split('_')[1],  # Extract device name from entity_name
             "manufacturer": "OneMeter",
             "entry_type": "service",
         }
 
-        if "Usage Level" in name or "Consumption" in name:
+        if "Usage Level" in entity_name or "Consumption" in entity_name:
             self._attr_state_class = "total_increasing"
             self._attr_device_class = "energy"
-        elif "Last API Refresh" in name:
+        elif "Last API Refresh" in entity_name:
             self._attr_device_class = "timestamp"
 
     @property
     def name(self):
-        return self._name
+        # Return the entity name for entity ID generation
+        return self._entity_name
 
     @property
     def unique_id(self):
@@ -98,7 +105,7 @@ class OneMeterSensor(CoordinatorEntity, SensorEntity):
         try:
             return self._value_fn(self.coordinator.data)
         except Exception as e:
-            _LOGGER.warning("Error parsing value for %s: %s", self._name, e)
+            _LOGGER.warning("Error parsing value for %s: %s", self._friendly_name, e)
             return None
 
 async def create_utility_meter(hass: HomeAssistant, device_name: str, entry: ConfigEntry):

@@ -1,4 +1,4 @@
-# OneMeter Integration for Home Assistant
+# WORK IN PROGRESS - OneMeter Integration for Home Assistant
 
 This custom integration connects [OneMeter](https://onemeter.com) devices to Home Assistant via their REST API. It fetches energy and battery data, exposes them as sensors, and optionally creates a Utility Meter helper for seamless integration with Home Assistant’s Energy Dashboard.
 

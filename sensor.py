@@ -111,7 +111,7 @@ class OneMeterSensor(CoordinatorEntity, SensorEntity):
 async def create_utility_meter(hass: HomeAssistant, device_name: str, entry: ConfigEntry):
     from homeassistant.helpers import entity_registry as er
 
-    sensor_entity_id = f"sensor.onemeter_{slugify(device_name)}_usage_level"
+    sensor_entity_id = f"sensor.onemeter_{slugify(device_name)}_total_consumption"
     meter_name = f"OneMeter_{device_name}_UtilityMeter"
     meter_id = f"utility_meter.onemeter_{slugify(device_name)}_utilitymeter"
 
